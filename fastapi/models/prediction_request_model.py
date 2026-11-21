@@ -8,5 +8,5 @@ class PredictionRequest(BaseModel):
     # Texto da mensagem que vai ser analisada (description e examples aparecem no /docs)
     message: str = Field(
         description="Texto da mensagem do cliente que terá a intenção classificada",
-        examples=["Meu produto chegou com defeito e quero devolver"],
+        examples=["I want to cancel my order"],
     )

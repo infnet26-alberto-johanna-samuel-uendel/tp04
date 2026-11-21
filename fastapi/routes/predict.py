@@ -8,6 +8,8 @@ from models.prediction_sql_model import Prediction
 from models.user_sql_model import User
 from security.dependencies import get_current_user
 
+
+
 router = APIRouter(tags=["Predições"])  # Grupo de rotas de previsão
 
 # ROTA - Busca previsão pelo ID

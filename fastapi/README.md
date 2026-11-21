@@ -1,46 +1,49 @@
 # EXCUTAR APLICAÇÃO COMPLETO
 
 ```bash
-py -m venv .venv
+# Na pasta da "\fastapi" , criar o .venv com as dependências e iniciara a aplicação
+py -m venv .venv --upgrade-deps
 .venv\Scripts\Activate.ps1
 py -m pip install -r requirements.txt
+# executar
+uvicorn main:app --reload
+
+# ou executar
+uvicorn main:app --port 8000 --reload
+
+# ou executar
 fastapi dev main.py
 ```
 
 ## Rodar Testes Automatizados
 
 ```bash
-# Dentro do ambiEnte virtual .venv
+# Dentro do ambinte virtual .venv
 py -m pytest -v
 ```
 
-## Pré-requisitos
-
-- VS Code
-- Python 3.10 ou superior
-- pip
-- **Só no Windows:** permitir execução de scripts no PowerShell (necessário só uma vez)
+## Rodar arquivo ipynb
 
 ```bash
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+# Na pasta da "tp4\eda", dentro do ambiente virtual .venv
+jupyter nbconvert --execute --inplace "eda_tp4.ipynb"
+
+# Dentro do ambiente virtual .venv de forma interativa(da pra visualizar as celulas que ja foram executados com o resultado parcial)
+papermill "eda_tp4.ipynb" "eda_tp4.ipynb" --log-output
+
+# Confirmar que excutou tudo sem erro
+$LASTEXITCODE
 ```
 
 ## Instruções de instalação
 
-1. Clone o repositório:
-
-```bash
-git clone https://github.com/infnet26-alberto-johanna-samuel-uendel/tp03.git
-cd tp03/fastapi
-```
-
-2. Abra o projeto e acesse a pasta da API:
+1. Abra o projeto e acesse a pasta da API:
 
 ```bash
 cd .\fastapi
 ```
 
-3. Crie e ative um ambiente virtual:
+2. Crie e ative um ambiente virtual:
    - Verifique se está dentro da pasta "fastapi"
 
 ```bash
@@ -104,5 +107,20 @@ rm -rf .venv
 2. Criar requirements.txt
 
 ```bash
-python -m pip freeze > requirements.txt
+py -m pip freeze > requirements.txt
+```
+
+# Instalação do JWT TOOL
+
+```bash
+# FAZER TUDO DENTRO DO .venv
+# segundo terminal: clonar e instalar a ferramenta
+git clone https://github.com/ticarpi/jwt_tool.git
+cd jwt_tool
+
+# instalar as dependências dentro do jwt_tool
+py -m pip install -r requirements.txt
+
+# conferir se instalou (mostra a ajuda)
+py jwt_tool.py -h
 ```

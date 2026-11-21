@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()
 import os, runpy, time
 from pathlib import Path
 from fastapi import FastAPI, Request
@@ -7,7 +9,7 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from sqlmodel import SQLModel
 from database.connection import engine, DATABASE_NAME
-from routes import health, auth, predict, docs
+from routes import health, auth, predict, docs, classify
 from routes.auth import limiter
 
 # Pasta fastapi/ (usada para localizar os arquivos estáticos do Swagger)
@@ -39,7 +41,7 @@ O token é um JWT assinado com HS256 e vale por 30 minutos.
 app = FastAPI(
     title="API de Atendimento ao Cliente - Classificação de Intenções",
     description=DESCRICAO_API,
-    version="3.0.0",
+    version="4.0.0",
     # O /docs padrão do FastAPI é desligado e substituído pelo routes/docs.py (ZAP FINDINGS 3, 4 e 5)
     docs_url=None,
     # O /redoc também é desligado: ele carrega o ReDoc de CDN e depende de estilos inline
@@ -134,3 +136,4 @@ app.include_router(health.router)
 app.include_router(auth.router)
 app.include_router(predict.router)
 app.include_router(docs.router)
+app.include_router(classify.router)
