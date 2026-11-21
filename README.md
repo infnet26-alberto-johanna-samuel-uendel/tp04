@@ -1,4 +1,4 @@
-# TP3 - Análise e Segurança de Agentes de IA
+# TP4 - Análise e Segurança de Agentes de IA
 
 **Projeto de Bloco | Instituto Infnet**
 
@@ -276,15 +276,15 @@ prediction, pois ela é dele; `GET /predictions/1` responde **404**, pois perten
 
 #### Controles de segurança
 
-| Controle             | Como foi implementado                                                                                                                                                                                                                             |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Campos extras        | Modelos Pydantic com `extra='forbid'`: campo não definido no modelo → **422**                                                                                                                                                                     |
-| Ownership (BOLA)     | As rotas de predictions filtram pelo `owner_id` do usuário logado; o recurso de outro usuário não é retornado (**404**)                                                                                                                           |
-| HTTPS                | `run_https.py` serve a API somente com TLS (certificado autoassinado local); no Render o HTTPS é da plataforma. O HSTS impede o navegador de voltar para HTTP                                                                                    |
+| Controle             | Como foi implementado                                                                                                                                                                                                                                                                                                    |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Campos extras        | Modelos Pydantic com `extra='forbid'`: campo não definido no modelo → **422**                                                                                                                                                                                                                                            |
+| Ownership (BOLA)     | As rotas de predictions filtram pelo `owner_id` do usuário logado; o recurso de outro usuário não é retornado (**404**)                                                                                                                                                                                                  |
+| HTTPS                | `run_https.py` serve a API somente com TLS (certificado autoassinado local); no Render o HTTPS é da plataforma. O HSTS impede o navegador de voltar para HTTP                                                                                                                                                            |
 | Headers de segurança | Middleware adiciona `Strict-Transport-Security`, `X-Frame-Options`, `X-Content-Type-Options` e `Content-Security-Policy` em todas as respostas. O CSP das rotas da API bloqueia tudo (`default-src 'none'`) e o do `/docs` só permite a própria origem, **sem `unsafe-inline`** e com `form-action`/`base-uri` definidos |
-| `/docs` sem CDN      | O Swagger UI (`swagger-ui-dist` 5.33.2) é servido pela própria API em `/static`, com atributo `integrity` (SRI, SHA-384) em cada arquivo. O `/redoc` foi desligado                                                                                |
-| CORS                 | Middleware `CORSMiddleware` com lista explícita de origens permitidas (sem `*`)                                                                                                                                                                   |
-| Rate limiting        | SlowAPI no `POST /auth/token`: **10 requisições por minuto por cliente** (IP); a 11ª recebe **429**                                                                                                                                               |
+| `/docs` sem CDN      | O Swagger UI (`swagger-ui-dist` 5.33.2) é servido pela própria API em `/static`, com atributo `integrity` (SRI, SHA-384) em cada arquivo. O `/redoc` foi desligado                                                                                                                                                       |
+| CORS                 | Middleware `CORSMiddleware` com lista explícita de origens permitidas (sem `*`)                                                                                                                                                                                                                                          |
+| Rate limiting        | SlowAPI no `POST /auth/token`: **10 requisições por minuto por cliente** (IP); a 11ª recebe **429**                                                                                                                                                                                                                      |
 
 **Justificativa do limite de 10 requisições por minuto:** um usuário legítimo raramente erra a senha mais
 do que algumas vezes seguidas, então 10 tentativas por minuto não atrapalham o uso normal. Já um ataque de
@@ -313,14 +313,14 @@ python -m pytest tests/ -v
 
 Os testes cobrem:
 
-| Arquivo                           | Teste                                          | Resultado esperado                     |
-| --------------------------------- | ---------------------------------------------- | -------------------------------------- |
-| `tests/test_autenticacao.py`      | Login com credenciais válidas e inválidas      | **200** com token / **401**            |
-| `tests/test_autorizacao_bola.py`  | Acesso a recurso de outro usuário              | **404**, o recurso **não** é retornado |
-| `tests/test_validacao_entrada.py` | Envio de campo extra no body                   | **422**                                |
-| `tests/test_rate_limiting.py`     | Mais de 10 tentativas de login no mesmo minuto | **429** a partir da 11ª tentativa      |
-| `tests/test_rota_protegida.py`    | Acesso a rota protegida sem token              | **401**                                |
-| `tests/test_headers_seguranca.py` | CSP do `/docs` sem `unsafe-inline`, Swagger sem CDN e com SRI, headers de segurança (evidência das correções do ZAP) | **200** e headers corretos |
+| Arquivo                           | Teste                                                                                                                | Resultado esperado                     |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| `tests/test_autenticacao.py`      | Login com credenciais válidas e inválidas                                                                            | **200** com token / **401**            |
+| `tests/test_autorizacao_bola.py`  | Acesso a recurso de outro usuário                                                                                    | **404**, o recurso **não** é retornado |
+| `tests/test_validacao_entrada.py` | Envio de campo extra no body                                                                                         | **422**                                |
+| `tests/test_rate_limiting.py`     | Mais de 10 tentativas de login no mesmo minuto                                                                       | **429** a partir da 11ª tentativa      |
+| `tests/test_rota_protegida.py`    | Acesso a rota protegida sem token                                                                                    | **401**                                |
+| `tests/test_headers_seguranca.py` | CSP do `/docs` sem `unsafe-inline`, Swagger sem CDN e com SRI, headers de segurança (evidência das correções do ZAP) | **200** e headers corretos             |
 
 ### Integração contínua (GitHub Actions)
 
@@ -339,8 +339,8 @@ não tem nenhum finding Medium ou High:
 
 | Relatório                                                          | High | Medium | Low | Informational |
 | ------------------------------------------------------------------ | :--: | :----: | :-: | :-----------: |
-| [zap/relatorio_zap_antes.html](zap/relatorio_zap_antes.html) (TP2) | 1    | 4      | 1   | 3             |
-| [zap/relatorio_zap_final.html](zap/relatorio_zap_final.html) (TP3) | 0    | 0      | 33  | 11            |
+| [zap/relatorio_zap_antes.html](zap/relatorio_zap_antes.html) (TP2) |  1   |   4    |  1  |       3       |
+| [zap/relatorio_zap_final.html](zap/relatorio_zap_final.html) (TP3) |  0   |   0    | 33  |      11       |
 
 A análise de cada finding (severidade, por que é um risco, correção realizada e evidência de que o problema
 não permanece) e a explicação dos Low/Informational restantes estão em
@@ -355,7 +355,7 @@ indicam onde cada problema foi resolvido.
 | CSP do `/docs` sem `unsafe-inline`, com `form-action`, `base-uri` e `object-src` | ZAP findings 2, 3 e 4 (Medium)         |
 | `/docs` próprio (`routes/docs.py`) com Swagger UI servido em `/static` e SRI     | ZAP findings 3, 4 e 5 (Medium)         |
 | `/redoc` desligado (carrega o ReDoc de CDN e depende de estilos inline)          | Mesmos problemas dos findings 3, 4 e 5 |
-| Rotas com descrição, exemplos, respostas 401/404/422/429 e tags no `/docs`      | Documentação interativa exigida no TP3 |
+| Rotas com descrição, exemplos, respostas 401/404/422/429 e tags no `/docs`       | Documentação interativa exigida no TP3 |
 
 ---
 
@@ -447,15 +447,15 @@ TP3/
 
 ## Responsabilidades e dependências
 
-| Módulo      | Responsabilidade                                                                     | Depende de                       |
-| ----------- | ------------------------------------------------------------------------------------ | -------------------------------- |
-| `main.py`   | Cria o app FastAPI, registra os routers, os middlewares de segurança e o rate limit  | `routes`, `database`             |
-| `run_https.py` | Sobe a API com HTTPS (TLS) e gera o certificado autoassinado local                | `main`                           |
-| `routes/`   | Define os endpoints. Não tem lógica de segurança, só chama as funções de `security`  | `models`, `security`, `database` |
-| `static/`   | Arquivos do Swagger UI servidos pela própria API em `/static` (usados pelo `/docs`)  | nenhum                           |
-| `models/`   | Modelos Pydantic que validam a entrada e a saída e tabelas SQLModel do banco         | nenhum                           |
-| `security/` | Geração e validação do JWT, `OAuth2PasswordBearer` e identificação do usuário logado | `models`, `database`             |
-| `database/` | Conexão com o banco SQLite via SQLModel                                              | nenhum                           |
+| Módulo         | Responsabilidade                                                                     | Depende de                       |
+| -------------- | ------------------------------------------------------------------------------------ | -------------------------------- |
+| `main.py`      | Cria o app FastAPI, registra os routers, os middlewares de segurança e o rate limit  | `routes`, `database`             |
+| `run_https.py` | Sobe a API com HTTPS (TLS) e gera o certificado autoassinado local                   | `main`                           |
+| `routes/`      | Define os endpoints. Não tem lógica de segurança, só chama as funções de `security`  | `models`, `security`, `database` |
+| `static/`      | Arquivos do Swagger UI servidos pela própria API em `/static` (usados pelo `/docs`)  | nenhum                           |
+| `models/`      | Modelos Pydantic que validam a entrada e a saída e tabelas SQLModel do banco         | nenhum                           |
+| `security/`    | Geração e validação do JWT, `OAuth2PasswordBearer` e identificação do usuário logado | `models`, `database`             |
+| `database/`    | Conexão com o banco SQLite via SQLModel                                              | nenhum                           |
 
 Fluxo: `main.py` → `routes/*` → (`models/*` para validar dados) + (`security/jwt.py` e
 `security/dependencies.py` para autenticar) + (`database/connection.py` para acessar o banco).

@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: tp03-pb
+    name: tp04-pb
     runtime: python
     plan: starter
     region: oregon
