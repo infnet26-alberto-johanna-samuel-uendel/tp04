@@ -77,7 +77,7 @@ O agente usa o nosso `/classify` como ferramenta.
 
 **Como testar:**
 1. Clique em **Try it out**
-3. Mande uma mensagem em inglês, por exemplo:
+2. Mande uma mensagem em inglês, por exemplo:
    - `{ "message": "I need a refund for my purchase" }`
    - `{ "message": "My bill is wrong" }`
    - `{ "message": "Tell me about this product features" }`
