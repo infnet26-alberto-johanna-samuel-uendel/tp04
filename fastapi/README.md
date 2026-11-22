@@ -124,3 +124,9 @@ py -m pip install -r requirements.txt
 # conferir se instalou (mostra a ajuda)
 py jwt_tool.py -h
 ```
+
+# Gerar Token (python)
+
+```bash
+python -c "import secrets; print(secrets.token_urlsafe(64))"
+```
